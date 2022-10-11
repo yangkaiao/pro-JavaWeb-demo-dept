@@ -135,21 +135,37 @@
 </body>
 </html>
 <script>
+    var elementById = document.getElementById("upbtn");
+    var elementsByClassName = document.getElementsByClassName("checkids");
+    //分页操作
     function page(pageNo){
         //window:指的是整个网页
         //location:指的是网页上的地址栏对象  .href是地址栏对象的属性，给地址栏赋值的
         window.location.href="department?method=findDepartments&pageNo="+pageNo;
     }
+
+    //删除操作
     function del() {
-        if(confirm("是否确定要删除？")){
-        window.location.href="department?method=delDept";
+
+        var count = 0;
+        for (let i = 0; i < elementsByClassName.length; i++) {
+            var checked = elementsByClassName[i].checked;
+            console.log(checked)
+            if (checked){
+                count++;
+                if(confirm("是否确定要删除？")){
+                    window.location.href="department?method=delDept";
+                }
+            }
         }
 
+        if(count==0){
+            alert("请选择一个或多个进行删除")
+            return false;
+        }
     }
-    var elementById = document.getElementById("upbtn");
-    var elementsByClassName = document.getElementsByClassName("checkids");
 
-
+    //更改 操作
     elementById.onclick=function(){
         var count = 0;
         for (let i = 0; i < elementsByClassName.length; i++) {
@@ -162,6 +178,10 @@
         if(count>1){
           alert("请选择一个进行更改")
          return false;
+        }
+        if(count==0){
+            alert("请选择一个进行更改")
+            return false;
         }
     }
 </script>
