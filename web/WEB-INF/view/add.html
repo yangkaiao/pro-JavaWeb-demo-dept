@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        tr{
+            height:40px;
+        }
+        textarea{
+            width: 300px;
+            height:60px
+        }
+        #box{
+            width:100%;
+            height:100px;
+        }
+        #h1{
+            width: 200px;
+            /*height: 100px;*/
+            float: left;
+        }
+        #box input{
+            width:60px;
+            height:40px;
+            background-color:#428bca;
+            color:white;
+            text-align: center;
+            margin:5px;
+            border-style:none;
+            border-radius:5px;
+            float: left;
+            font-size:16px;
+        }
+    </style>
+</head>
+<body>
+  <form th:action="@{department(method='addsubmit')}" method="post">
+     <div id="box">
+        <h1 id="h1">新增部门</h1>
+         <input type="submit" value="保存" name="submit" style="margin-left:300px">
+         <input type="submit" value="取消" name="submit" style="background:white;border:2px solid #ededed;color:black">
+
+     </div>
+      <table>
+          <tr>
+              <td>ID</td>
+              <td> <input type="text" name="id"></td>
+          </tr>
+          <tr>
+              <td>编号</td>
+              <td> <input type="text" name="num"></td>
+          </tr>
+          <tr>
+              <td>名称</td>
+              <td><input type="text" name="name"></td>
+          </tr>
+          <tr>
+              <td>所属省份</td>
+              <td><input type="text" name="pro"></td>
+          </tr>
+          <tr>
+              <td>部分人数</td>
+              <td><input type="text" name="peo"></td>
+          </tr>
+          <tr>
+              <td>描述</td>
+              <td><textarea name="des"></textarea></td>
+          </tr>
+      </table>
+
+
+  </form>
+</body>
+</html>

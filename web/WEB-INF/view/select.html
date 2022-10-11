@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        #tab{
+            text-align: center;
+            width:100%;
+            font-size:20px;
+        }
+        #tab th{
+            background-color:#c6daf2;
+        }
+        #tab tr:hover{
+            background-color:gold;
+        }
+        #tab tr:nth-child(even){
+            background-color:#eaf6f6
+        }
+        #tab tr{
+            background-color:#f5f8fd;
+            height:40px
+        }
+        #tab tr:nth-child(even):hover{
+            background-color:gold;
+        }
+        #addbtn{
+            width:90px;
+            height:40px;
+            background-color:#428bca;
+            color:white;
+            text-align: center;
+            margin:5px;
+            border-style:none;
+            border-radius:5px;
+            float: left;
+            font-size:20px;
+        }
+        #upbtn{
+            width:90px;
+            height:40px;
+            background-color:#ffffff;
+            text-align: center;
+            margin:5px;
+            border-style:none;
+            border-radius:5px;
+            float: left;
+            font-size:20px;
+            position: absolute;
+            top: 73px;
+            left:120px;
+        }
+        #box{
+            background-color:#f7f7f7;
+            border-radius:5px;
+            width:100%;
+            height:50px;
+            margin:15px;
+        }
+        #debtn{
+            width:90px;
+            height:40px;
+            background-color:#d9534f;
+            text-align: center;
+            margin:5px;
+            color:white;
+            border-style:none;
+            border-radius:5px;
+            font-size:20px;
+            position: absolute;
+            top: 73px;
+            left:220px;
+        }
+        #limitbox{
+            width:1200px;
+            height:40px;
+            margin:0 auto;
+            /*background:red;*/
+            text-align: center;
+            margin-top: 20px;
+        }
+        .btn{
+            width:80px;
+            height:30px;
+            border-radius: 5px;
+            border:1px solid gray;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+<h1 style="margin:15px">部门列表</h1>
+    <div id="box">
+        <a th:href="@{department(method='addDept')}"><button id="addbtn">创建</button></a>
+<!--        <a th:href="@{department(method='upDept')}"><button id="upbtn">编辑</button></a>-->
+    </div>
+    <form th:action="@{department(method='delDept')}" method="post">
+        <input type="submit" value="编辑" id="upbtn" name="DelUp" >
+        <input type="submit" value="删除" id="debtn" name="DelUp" th:onclick="del()">
+        <table border="0" cellspacing="0" cellpadding="0" id="tab">
+            <tr>
+                <th>操作</th>
+                <th>编号</th>
+                <th>名称</th>
+                <th>所属省份</th>
+                <th>部门人数</th>
+                <th>描述</th>
+            </tr>
+            <tr th:if="${#lists.isEmpty(deptList)}">
+                <td colspan="6">对不起，库存已空</td>
+            </tr>
+            <tr th:each="item : ${deptList}" th:unless="${#lists.isEmpty(deptList)}">
+                <td><input type="checkbox" name="checkid" th:value="${item.getDeptId()}" class="checkids" /></td>
+               <input type="hidden"  th:value="${item.getDeptId()}">
+                <td th:text="${item.getDeptNumber()}" ></td>
+                <td th:text="${item.getDeptName()}" style="color:#4f90cb"></td>
+                <td th:text="${item.province}"></td>
+                <td th:text="${item.people_counting}"></td>
+                <td th:text="${item.described}"></td>
+            </tr>
+        </table>
+    </form>
+    <div id="limitbox">
+        <input type="button" value="首 页" class="btn" th:onclick="|page(1)|" th:disabled="${session.pageNo==1}">
+        <input type="button" value="上一页" class="btn" th:onclick="|page(${session.pageNo-1})|" th:disabled="${session.pageNo==1}">
+        <input type="button" value="下一页" class="btn" th:onclick="|page(${session.pageNo+1})|" th:disabled="${session.pageNo==session.pageCount}">
+        <input type="button" value="尾 页" class="btn" th:onclick="|page(${session.pageCount})|" th:disabled="${session.pageNo==session.pageCount}">
+    </div>
+
+</body>
+</html>
+<script>
+    function page(pageNo){
+        //window:指的是整个网页
+        //location:指的是网页上的地址栏对象  .href是地址栏对象的属性，给地址栏赋值的
+        window.location.href="department?method=findDepartments&pageNo="+pageNo;
+    }
+    function del() {
+        if(confirm("是否确定要删除？")){
+        window.location.href="department?method=delDept";
+        }
+
+    }
+    var elementById = document.getElementById("upbtn");
+    var elementsByClassName = document.getElementsByClassName("checkids");
+
+
+    elementById.onclick=function(){
+        var count = 0;
+        for (let i = 0; i < elementsByClassName.length; i++) {
+            var checked = elementsByClassName[i].checked;
+            console.log(checked)
+            if (checked){
+                count++;
+            }
+        }
+        if(count>1){
+          alert("请选择一个进行更改")
+         return false;
+        }
+    }
+</script>
